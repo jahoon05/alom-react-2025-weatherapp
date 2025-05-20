@@ -21,12 +21,27 @@ export const getWeatherDescription = (code) => {
 
 export const formatHourlyData = (weatherData) => {
   if (!weatherData) return [];
-  // 밑에 코드 채워주세요
-  return [];
+
+  const { time, temperature_2m, weather_code } = weatherData.hourly;
+
+  return time.map((timestamp, index) => ({
+    time: timestamp, 
+    hour: timestamp.split("T")[1], 
+    temperature: temperature_2m[index], 
+    weatherCode: weather_code[index],
+    description: getWeatherDescription(weather_code[index]),
+  }));
 };
 
 export const formatDailyData = (weatherData) => {
-  if (!weatherData) return [];
-  // 밑에 코드 채워주세요
-  return [];
+  if (!weatherData || !weatherData.daily) return [];
+
+  const { time, temperature_2m_max, weather_code } = weatherData.daily;
+
+  return time.map((date, index) => ({
+    date,
+    temperatureMax: temperature_2m_max?.[index] ?? null,
+    weatherCode: weather_code[index],
+    description: getWeatherDescription(weather_code[index]),
+  }));
 };
